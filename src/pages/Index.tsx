@@ -205,6 +205,79 @@ const Index = () => {
                   </TabsContent>
 
                   <TabsContent value="technical" className="space-y-4 mt-4">
+                    <div className="p-4 bg-secondary/30 rounded-lg border border-border/30">
+                      <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                        <Icon name="Network" size={16} className="text-primary" />
+                        Схема водостока
+                      </h3>
+                      <div className="relative h-48 bg-background/50 rounded-lg border border-border/50 overflow-hidden">
+                        <svg className="w-full h-full" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid meet">
+                          <defs>
+                            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(14, 165, 233, 0.1)" strokeWidth="0.5"/>
+                            </pattern>
+                            <linearGradient id="waterGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <animate attributeName="x1" values="0%;100%;0%" dur="3s" repeatCount="indefinite" />
+                              <animate attributeName="x2" values="100%;200%;100%" dur="3s" repeatCount="indefinite" />
+                              <stop offset="0%" stopColor="rgba(14, 165, 233, 0.3)" />
+                              <stop offset="50%" stopColor="rgba(14, 165, 233, 0.6)" />
+                              <stop offset="100%" stopColor="rgba(14, 165, 233, 0.3)" />
+                            </linearGradient>
+                          </defs>
+                          
+                          <rect width="400" height="200" fill="url(#grid)" />
+                          
+                          <line x1="50" y1="80" x2="350" y2={80 + parseFloat(drainLength) * result.slope / 5} 
+                                stroke="hsl(var(--primary))" strokeWidth="3" strokeLinecap="round" />
+                          <line x1="50" y1="95" x2="350" y2={95 + parseFloat(drainLength) * result.slope / 5} 
+                                stroke="hsl(var(--primary))" strokeWidth="3" strokeLinecap="round" />
+                          
+                          <rect x="50" y={80} width="300" height="15" 
+                                fill="url(#waterGradient)" opacity="0.7" 
+                                transform={`skewY(${Math.atan(result.slope / 1000) * 180 / Math.PI})`} 
+                                transform-origin="50 87.5" />
+                          
+                          <line x1="50" y1="70" x2="50" y2="105" 
+                                stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="3,3" />
+                          <line x1="350" y1="70" x2="350" y2={110 + parseFloat(drainLength) * result.slope / 5} 
+                                stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" strokeDasharray="3,3" />
+                          
+                          <line x1="50" y1="120" x2="350" y2="120" 
+                                stroke="hsl(var(--muted-foreground))" strokeWidth="1" strokeDasharray="2,2" />
+                          
+                          <text x="200" y="140" textAnchor="middle" fill="hsl(var(--muted-foreground))" fontSize="12">
+                            L = {drainLength} м
+                          </text>
+                          
+                          <text x="370" y={100 + parseFloat(drainLength) * result.slope / 5} 
+                                fill="hsl(var(--accent))" fontSize="12" fontWeight="bold">
+                            h = {(parseFloat(drainLength) * result.slope).toFixed(0)} мм
+                          </text>
+                          
+                          <text x="25" y="90" fill="hsl(var(--primary))" fontSize="11" fontWeight="600">
+                            ⌀{result.diameter}
+                          </text>
+                          
+                          <g transform="translate(50, 155)">
+                            <line x1="0" y1="0" x2="30" y2="0" stroke="hsl(var(--accent))" strokeWidth="2" markerEnd="url(#arrowhead)" />
+                            <text x="35" y="5" fill="hsl(var(--accent))" fontSize="11" fontWeight="600">
+                              Направление потока
+                            </text>
+                          </g>
+                          
+                          <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                              <polygon points="0 0, 10 3, 0 6" fill="hsl(var(--accent))" />
+                            </marker>
+                          </defs>
+                        </svg>
+                      </div>
+                      <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+                        <Icon name="Info" size={14} className="text-primary" />
+                        <span>Анимированная схема показывает уклон {result.slope.toFixed(1)} мм/м</span>
+                      </div>
+                    </div>
+
                     <div className="p-4 bg-secondary/30 rounded-lg border border-border/30 space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">Пропускная способность</span>
